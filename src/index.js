@@ -15,6 +15,7 @@ import productRoute from "../routes/product.route.js";
 import warehouseRoute from "../routes/warehouse.route.js";
 import shelfRoute from "../routes/shelf.route.js"
 import exportRoute from "../routes/export.route.js";
+import ProductImage from '../routes/productimage.route.js';
 
 // Connecting mongoDB Database
 mongoose.Promise = global.Promise;
@@ -38,6 +39,7 @@ app.use('/products' , productRoute);
 app.use('/warehouse' , warehouseRoute);
 app.use('/shelf' , shelfRoute);
 app.use('/export' , exportRoute);
+app.use('/productimg' , ProductImage);
 
 app.get('/health-check', jwtValidate, (req, res) => {
     res.send('Hello World!');

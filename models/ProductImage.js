@@ -1,23 +1,14 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
 const productImageSchema = new Schema({
-  imageId: {
-    type: String,
-    required: true,
-    max: 100
-  },
-  image: {
-    type: Buffer,
-    required: true,
-  },
   filename: {
     type: String,
     required: true,
   },
-  contentType: {
-    type: String,
+  updateAt: {
+    type: Date,
     required: true,
   },
   createdAt: {
