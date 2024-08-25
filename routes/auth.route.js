@@ -8,22 +8,22 @@ const jwtGenerate = (user) => {
     const accessToken = jwt.sign(
         {name: user.name, id: user._id},
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: "30m", algorithm: "HS256"}
+        {expiresIn: "1", algorithm: "HS256"}
     );
 
     return accessToken;
 }
 
 router.post("/login", async (req, res) => {
-    const {username, password} = req.body;
-    console.log(username);
+    const {email, password} = req.body;
+    console.log(email);
     
     try {
         // Find user by username and password
-        const user = await User.findOne({username, password});
+        const user = await User.findOne({email, password});
 
         if (!user) {
-            return res.status(400).json({message: "Invalid username or password"});
+            return res.status(400).json({message: "Invalid email or password"});
         }
 
         // Generate JWT tokens

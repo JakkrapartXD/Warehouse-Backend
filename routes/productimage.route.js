@@ -2,12 +2,20 @@ import express from "express";
 import ProductImage from "../models/ProductImage.js";
 import multer from "multer";
 import fs from "fs";
+import { fileURLToPath } from 'url';
+import path,{ dirname } from 'path';
 
 const router = express.Router();
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const uploadsFolder = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadsFolder)) {
+  fs.mkdirSync(uploadsFolder);
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads/");
+    cb(null, uploadsFolder);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now();
@@ -72,21 +80,23 @@ router.get("/:id", jwtValidate, async (req, res) => {
 // Update a product image
 router.put(
   "/edit/:id",
-  upload.single("image"),
   jwtValidate,
+  upload.single("image"),
   async (req, res) => {
+    console.log(req.file);
+    
     const id = req.params.id;
     const filename = req.file.filename;
+    console.log(req.file);
     try {
       const oldImage = await ProductImage.findById(id);
       console.log(oldImage);
 
       if (oldImage) {
-        const filePath = `./uploads/${oldImage.filename}`;
-        fs.unlink(filePath, function (err) {
-          if (err) return console.log(err);
-          console.log("file deleted successfully");
-        });
+        const oldFilePath = path.join(uploadsFolder, oldImage.filename);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
         const productImage = await ProductImage.findByIdAndUpdate(id, {
           filename,
           updateAt: Date.now(),

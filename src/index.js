@@ -5,6 +5,8 @@ import cors from 'cors';
 import dbConfig from '../database/db.js';
 import {jwtValidate} from "../middleware/index.js";
 import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import path,{ dirname } from 'path';
 
 dotenv.config()
 
@@ -16,6 +18,11 @@ import warehouseRoute from "../routes/warehouse.route.js";
 import shelfRoute from "../routes/shelf.route.js"
 import exportRoute from "../routes/export.route.js";
 import ProductImage from '../routes/productimage.route.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const uploadFolder = path.join(__dirname, '../uploads');
+
+
 
 // Connecting mongoDB Database
 mongoose.Promise = global.Promise;
@@ -43,6 +50,12 @@ app.use('/productimg' , ProductImage);
 
 app.get('/health-check', jwtValidate, (req, res) => {
     res.send('Hello World!');
+});
+
+app.get('/images/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(uploadFolder, filename);
+  res.sendFile(imagePath);
 });
 
 // PORT

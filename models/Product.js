@@ -9,7 +9,10 @@ const ProductSchema = new Schema({
     price: { type: String, required: true, max: 100 },
     warehouseId: { type: String, max: 100 },
     warehouseName: { type: String, max: 100 },
-    shelfId: { type: String, max: 100 }
+    shelfId: { type: String, max: 100 },
+    imagename: {type: String,},
+    updateAt: {type: Date,required: true,},
+    createdAt: {type: Date,default: Date.now,},
 });
 
 const Product = mongoose.model('Product', ProductSchema);
