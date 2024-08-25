@@ -49,7 +49,7 @@ app.use('/export' , exportRoute);
 app.use('/productimg' , ProductImage);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+  res.status(200).send('Hello World!');
 });
 
 app.get('/images/:filename', (req, res) => {
