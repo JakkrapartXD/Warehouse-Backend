@@ -48,7 +48,7 @@ app.use('/shelf' , shelfRoute);
 app.use('/export' , exportRoute);
 app.use('/productimg' , ProductImage);
 
-app.get('/health-check', jwtValidate, (req, res) => {
+app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
